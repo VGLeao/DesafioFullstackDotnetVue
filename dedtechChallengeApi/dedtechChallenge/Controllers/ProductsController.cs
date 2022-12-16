@@ -62,9 +62,9 @@ namespace DedtechChallenge.Controllers
         [HttpDelete("{id:int}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> Delete(int productId)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _productService.DeleteAsync(productId);
+            await _productService.DeleteAsync(id);
 
             return NoContent();
         }

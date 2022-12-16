@@ -23,6 +23,10 @@ namespace DedtechChallenge.Services
 
         public async Task<Product> CreateAsync(Product product)
         {
+            DateTime now = DateTime.Now;
+            product.CreatedAt = now;
+            product.UpdatedAt = now;
+
             await _unitOfWork.Products.SaveAsync(product);
 
             await _unitOfWork.Save();
