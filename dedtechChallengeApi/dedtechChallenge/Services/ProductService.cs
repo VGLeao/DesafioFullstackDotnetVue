@@ -7,35 +7,32 @@ namespace DedtechChallenge.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        private readonly DedtechChallengeContext _context;
-
-        public ProductService(IProductRepository productRepository, DedtechChallengeContext context)
+        public ProductService(IUnitOfWork unitOfWork)
         {
-            _repository = productRepository;
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<List<Product>> GetAll()
         {
-            var products = await _repository.GetAllAndSortBy(sortBy => sortBy.Id);
+            var products = await _unitOfWork.Products.GetAllAndSortBy(sortBy => sortBy.Id);
 
             return products;
         }
 
         public async Task<Product> CreateAsync(Product product)
         {
-            await _repository.SaveAsync(product);
+            await _unitOfWork.Products.SaveAsync(product);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Save();
 
             return product;
         }
 
         public async Task<Product> GetByIdAsync(int productId)
         {
-            return await _repository.GetByIdAsync(productId);
+            return await _unitOfWork.Products.GetByIdAsync(productId);
         }
 
         public async Task<Product> UpdateAsync(Product product)
@@ -49,13 +46,14 @@ namespace DedtechChallenge.Services
                 productSaved.Price = product.Price;
                 productSaved.UpdatedAt = DateTime.Now;
 
-            _repository.Update(productSaved);
-            await _context.SaveChangesAsync();
+                _unitOfWork.Products.Update(productSaved);
+                await _unitOfWork.Save();
 
-            return productSaved;
-            } else
+                return productSaved;
+            }
+            else
             {
-                return product;
+                throw new BadHttpRequestException("Não foi encontrado o produto a ser editado");
             }
 
         }
@@ -64,9 +62,9 @@ namespace DedtechChallenge.Services
         {
             var productSaved = await GetByIdAsync(productId);
 
-            _repository.Delete(productSaved);
+            _unitOfWork.Products.Delete(productSaved);
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Save();
         }
     }
 }

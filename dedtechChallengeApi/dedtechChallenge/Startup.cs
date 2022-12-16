@@ -31,9 +31,7 @@ namespace DedtechChallenge
 
             services.AddDbContext<DedtechChallengeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DedtechChallengeContext")));
 
-
-            services.AddScoped<IProductRepository, ProductRepository>();
-
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IProductService, ProductService>();
         }
