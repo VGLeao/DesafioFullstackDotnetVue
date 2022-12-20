@@ -5,10 +5,10 @@ namespace DedtechChallenge.Repositories.Interfaces
 {
     public interface IGenericRepository<T, Pk> where T : class
     {
-        Task<List<T>> GetAll();
-        Task<List<T>> GetAllAndSortBy(Expression<Func<T, object>> sortBy, string order = "asc");
+        IQueryable<T> GetAll();
+        IQueryable<T> GetAllAndSortBy(Expression<Func<T, object>> sortBy, string order = "asc");
         Task<T> GetByIdAsync(Pk id);
-        Task<List<T>> Find(Expression<Func<T, bool>> expression);
+        IQueryable<T> Find(Expression<Func<T, bool>> expression);
         Task<EntityEntry> SaveAsync(T entity);
         EntityEntry Update(T entity);
         void Delete(T entity);

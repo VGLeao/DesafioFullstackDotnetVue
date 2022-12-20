@@ -14,21 +14,21 @@ namespace DedtechChallenge.Repositories
             _context = context;
         }
 
-        public Task<List<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().ToListAsync();
+            return _context.Set<T>();
         }
 
-        public Task<List<T>> GetAllAndSortBy(Expression<Func<T, object>> sortBy, string order = "asc")
+        public IQueryable<T> GetAllAndSortBy(Expression<Func<T, object>> sortBy, string order = "asc")
         {
             var query = _context.Set<T>();
             if (order.ToLower().Equals("desc"))
             {
-                return query.OrderByDescending(sortBy).ToListAsync();
+                return query.OrderByDescending(sortBy);
 
             }
 
-            return query.OrderBy(sortBy).ToListAsync();
+            return query.OrderBy(sortBy);
         }
 
         public async Task<T> GetByIdAsync(Pk id)
@@ -36,9 +36,9 @@ namespace DedtechChallenge.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public Task<List<T>> Find(Expression<Func<T, bool>> expression)
+        public IQueryable<T> Find(Expression<Func<T, bool>> expression)
         {
-            return _context.Set<T>().Where(expression).ToListAsync();
+            return _context.Set<T>().Where(expression);
         }
 
         public async Task<EntityEntry> SaveAsync(T entity)

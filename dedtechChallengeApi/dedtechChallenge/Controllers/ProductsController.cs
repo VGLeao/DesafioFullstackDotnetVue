@@ -1,5 +1,6 @@
 ﻿using DedtechChallenge.Models;
 using DedtechChallenge.Services.Interfaces;
+using DedtechChallenge.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -19,11 +20,11 @@ namespace DedtechChallenge.Controllers
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] int pageIndex, int pageSize)
         {
-            var products = await _productService.GetAll();
+            var paginatedProducts = await PaginatedList<Product>.ToPagedListAsync(_productService.GetAll(), pageIndex, pageSize);
 
-            return Ok(products);
+            return Ok(paginatedProducts);
         }
 
         [HttpGet("{id:int}")]

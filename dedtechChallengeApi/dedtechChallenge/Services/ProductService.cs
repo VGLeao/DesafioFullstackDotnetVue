@@ -14,11 +14,11 @@ namespace DedtechChallenge.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Product>> GetAll()
+        public IQueryable<Product> GetAll()
         {
-            var products = await _unitOfWork.Products.GetAllAndSortBy(sortBy => sortBy.Id);
+            var query = _unitOfWork.Products.GetAllAndSortBy(sortBy => sortBy.Id) ;
 
-            return products;
+            return query;
         }
 
         public async Task<Product> CreateAsync(Product product)

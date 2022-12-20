@@ -4,7 +4,7 @@ namespace DedtechChallenge.Services.Interfaces
 {
     public interface IProductService
     {
-        Task<List<Product>> GetAll();
+        IQueryable<Product> GetAll();
 
         Task<Product> GetByIdAsync(int productId);
 
